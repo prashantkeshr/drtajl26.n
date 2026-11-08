@@ -52,9 +52,14 @@ export default function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-gray-light">
-              The clever choice for global digital transformation. From Mumbai to
-              Manhattan, London to Lagos — we build solutions that outsmart
-              challenges, anywhere in the world.
+              Privacy-first technology, built for Bharat. Dhurta India delivers
+              security-by-design solutions rooted in Indian values and compliant
+              with Indian law.
+            </p>
+            <p className="mt-3 text-xs text-gray-dark">
+              Registered in India | CIN: [placeholder]
+              <br />
+              Data stored in India · Compliant with DPDP Act 2023
             </p>
             <div className="mt-6 flex items-center gap-3">
               {[
@@ -152,17 +157,17 @@ export default function Footer() {
               ))}
             </div>
             <p className="mt-6 text-xs text-gray-light">
-              contact@dhurta.org
+              contact@dhurta.in
               <br />
-              Global Headquarters — Remote-first, everywhere.
+              India HQ — Remote-first, Bharat-rooted.
             </p>
           </div>
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-gray-light sm:flex-row">
-          <p>© {new Date().getFullYear()} DHURTA. All rights reserved.</p>
-          <p className="font-devanagari text-sm text-gold/70">
-            धूर्तः — clever, global, trusted.
+          <p>© {new Date().getFullYear()} DHURTA India. All rights reserved.</p>
+          <p className="font-devanagari text-sm text-saffron/70">
+            Made with ♥ in Bharat — धूर्तः, चतुरः, विश्वसनीयः
           </p>
         </div>
       </div>

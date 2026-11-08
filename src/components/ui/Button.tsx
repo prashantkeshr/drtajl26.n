@@ -8,7 +8,7 @@ type ButtonProps = {
   children: ReactNode;
   href?: string;
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "saffron" | "saffron-outline";
   className?: string;
   type?: "button" | "submit";
   icon?: ReactNode;
@@ -33,6 +33,10 @@ export default function Button({
       "border border-gold/40 text-gold hover:bg-gold/10 hover:border-gold hover:-translate-y-0.5 active:translate-y-0",
     ghost:
       "text-white hover:text-gold",
+    saffron:
+      "bg-saffron text-black font-bold hover:shadow-[0_0_30px_4px_rgba(255,153,51,0.4)] hover:-translate-y-0.5 active:translate-y-0",
+    "saffron-outline":
+      "border border-saffron/30 text-white hover:border-saffron/60 hover:bg-saffron/5 hover:-translate-y-0.5 active:translate-y-0",
   };
 
   const content = (

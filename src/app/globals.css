@@ -11,6 +11,8 @@
   --color-white: #ffffff;
   --color-gray-light: #b8c5d6;
   --color-gray-dark: #2a3a4a;
+  --color-saffron: #FF9933;
+  --color-india-green: #138808;
 }
 
 @theme inline {
@@ -23,6 +25,8 @@
   --color-teal: var(--color-teal);
   --color-gray-light: var(--color-gray-light);
   --color-gray-dark: var(--color-gray-dark);
+  --color-saffron: var(--color-saffron);
+  --color-india-green: var(--color-india-green);
 
   --font-display: var(--font-playfair), "Noto Serif", serif;
   --font-sans: var(--font-inter), var(--font-noto-sans), sans-serif;
@@ -142,13 +146,32 @@ body {
 .glass-card {
   background: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.06),
-    rgba(255, 255, 255, 0.02)
+    rgba(255, 255, 255, 0.065),
+    rgba(255, 255, 255, 0.018)
   );
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(201, 168, 76, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 153, 51, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .perspective-container {
   perspective: 1200px;
+}
+
+.text-gradient-saffron {
+  background: linear-gradient(
+    120deg,
+    #FFD580,
+    #FF9933 40%,
+    #E67300 60%,
+    #FFD580
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-saffron {
+  box-shadow: 0 0 24px rgba(255, 153, 51, 0.4), 0 0 48px rgba(255, 153, 51, 0.2);
 }

@@ -15,6 +15,9 @@ export default function TiltCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [isTouchDevice] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches
+  );
 
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
@@ -45,10 +48,10 @@ export default function TiltCard({
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={handleLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={isTouchDevice ? undefined : handleMouseMove}
+      onMouseEnter={isTouchDevice ? undefined : () => setHovered(true)}
+      onMouseLeave={isTouchDevice ? undefined : handleLeave}
+      style={isTouchDevice ? {} : { rotateX, rotateY, transformStyle: "preserve-3d" }}
       className={cn(
         "perspective-container relative rounded-2xl transition-shadow duration-300",
         hovered ? "shadow-[0_25px_60px_-15px_rgba(201,168,76,0.35)]" : "shadow-none",

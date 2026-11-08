@@ -1,0 +1,24 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a1628"/>
+
+  <!-- India silhouette -->
+  <path
+    d="M 698,113 L 751,154 L 977,245 L 1109,241 L 1040,336 L 963,350 L 921,434 L 858,490 L 830,518 L 816,483 L 778,413 L 764,364 L 761,322 L 707,308 L 739,294 L 718,217 L 781,154 Z"
+    fill="#FF9933"
+    opacity="0.18"
+  />
+
+  <!-- Brand name -->
+  <text x="80" y="260" font-family="Georgia, serif" font-size="130" font-weight="900" fill="#c9a84c" letter-spacing="-2">DHURTA</text>
+  <text x="80" y="340" font-family="Georgia, serif" font-size="58" font-weight="700" fill="#FF9933" letter-spacing="12">INDIA</text>
+
+  <!-- Tagline -->
+  <text x="80" y="400" font-family="Arial, sans-serif" font-size="22" fill="#b8c5d6" letter-spacing="1">Security-by-design. Built for Bharat.</text>
+
+  <!-- URL -->
+  <text x="80" y="560" font-family="Arial, sans-serif" font-size="20" fill="#b8c5d6" opacity="0.6">dhurta.in</text>
+
+  <!-- Accent line -->
+  <line x1="80" y1="460" x2="400" y2="460" stroke="#FF9933" stroke-width="1" opacity="0.3"/>
+</svg>

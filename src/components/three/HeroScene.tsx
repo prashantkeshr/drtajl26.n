@@ -2,103 +2,97 @@
 
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Float,
-  Stars,
-  Sparkles,
-  Environment,
-  MeshDistortMaterial,
-  Icosahedron,
-  Torus,
-  Octahedron,
-  Dodecahedron,
-  TorusKnot,
-} from "@react-three/drei";
+import { Stars, Sparkles, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
-function MouseGroup({ children }: { children: React.ReactNode }) {
-  const group = useRef<THREE.Group>(null);
+// Simplified India outline — x=(lon-82.5)*0.14, y=(lat-22.5)*0.14
+const INDIA_POINTS: [number, number][] = [
+  [-2.02, 2.02], // Kashmir NW
+  [-0.49, 1.61], // Kashmir NE ridge
+  [0.77, 0.70],  // Nepal border
+  [2.09, 0.74],  // Arunachal NE
+  [1.40, -0.21], // Mizoram
+  [0.63, -0.35], // Bengal coast north
+  [0.21, -1.19], // Orissa/AP coast
+  [-0.42, -1.75],// SE coast
+  [-0.70, -2.03],// Cape Comorin
+  [-0.84, -1.68],// Kerala south
+  [-1.22, -0.98],// Goa
+  [-1.36, -0.49],// Maharashtra
+  [-1.39, -0.07],// Gujarat coast
+  [-1.93, 0.07], // Gujarat tip (Kutch)
+  [-1.61, 0.21], // Gujarat north
+  [-1.82, 0.98], // Rajasthan
+  [-1.19, 1.61], // Punjab
+];
 
-  useFrame((state) => {
-    if (!group.current) return;
-    const x = state.pointer.x * 0.25;
-    const y = state.pointer.y * 0.18;
-    group.current.rotation.y += (x - group.current.rotation.y) * 0.03;
-    group.current.rotation.x += (-y - group.current.rotation.x) * 0.03;
+function IndiaMap() {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame(() => {
+    if (ref.current) ref.current.rotation.y += 0.0005;
   });
 
-  return <group ref={group}>{children}</group>;
+  const shape = new THREE.Shape();
+  INDIA_POINTS.forEach(([x, y], i) => {
+    if (i === 0) shape.moveTo(x, y);
+    else shape.lineTo(x, y);
+  });
+  shape.closePath();
+
+  return (
+    <mesh ref={ref} position={[0, 0, -1]}>
+      <extrudeGeometry args={[shape, { depth: 0.18, bevelEnabled: false }]} />
+      <meshStandardMaterial color="#FF9933" metalness={0.3} roughness={0.55} transparent opacity={0.7} />
+    </mesh>
+  );
 }
 
-function SpinningWireGlobe() {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((_, delta) => {
-    if (ref.current) ref.current.rotation.y += delta * 0.06;
-  });
+// 8 Indian cities: alternate gold / teal
+const CITY_DOTS: { pos: [number, number, number]; color: string }[] = [
+  { pos: [-0.74, 0.85, 0.22], color: "#C9A84C" },  // Delhi
+  { pos: [-1.34, -0.48, 0.22], color: "#00D4AA" }, // Mumbai
+  { pos: [-0.69, -1.34, 0.22], color: "#C9A84C" }, // Bengaluru
+  { pos: [-0.31, -1.31, 0.22], color: "#00D4AA" }, // Chennai
+  { pos: [0.83, 0.01, 0.22], color: "#C9A84C" },   // Kolkata
+  { pos: [-0.56, -0.71, 0.22], color: "#00D4AA" }, // Hyderabad
+  { pos: [-1.20, -0.56, 0.22], color: "#C9A84C" }, // Pune
+  { pos: [-1.39, 0.07, 0.22], color: "#00D4AA" },  // Ahmedabad
+];
+
+function CityDots() {
   return (
-    <mesh ref={ref} position={[0, 0, -2]}>
-      <sphereGeometry args={[3.4, 24, 24]} />
-      <meshBasicMaterial color="#C9A84C" wireframe transparent opacity={0.08} />
-    </mesh>
+    <>
+      {CITY_DOTS.map(({ pos, color }, i) => (
+        <mesh key={i} position={pos}>
+          <sphereGeometry args={[0.045, 8, 8]} />
+          <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.4} />
+        </mesh>
+      ))}
+    </>
   );
 }
 
 export default function HeroScene() {
   return (
-    <Canvas
-      camera={{ position: [0, 0, 8], fov: 45 }}
-      dpr={[1, 1.8]}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <ambientLight intensity={0.5} />
-      <pointLight position={[6, 6, 6]} intensity={1.4} color="#E8D5A3" />
-      <pointLight position={[-6, -3, -4]} intensity={1} color="#4A9EFF" />
-      <directionalLight position={[0, 5, 5]} intensity={0.6} />
+    <Canvas camera={{ position: [0, 0, 8], fov: 45 }} dpr={[1, 1.8]} gl={{ antialias: true, alpha: true }}>
+      <ambientLight intensity={0.6} />
+      <pointLight position={[4, 4, 6]} intensity={1.6} color="#FF9933" />
+      <pointLight position={[-4, -4, 4]} intensity={0.8} color="#C9A84C" />
+      <directionalLight position={[0, 5, 5]} intensity={0.5} />
 
       <Environment preset="city" />
 
-      <Stars radius={60} depth={30} count={2200} factor={2.2} saturation={0} fade speed={0.6} />
-      <Sparkles count={80} scale={[10, 6, 6]} size={2.5} speed={0.35} color="#C9A84C" opacity={0.6} />
+      <Stars radius={60} depth={30} count={1600} factor={2.2} saturation={0} fade speed={0.6} />
 
-      <SpinningWireGlobe />
+      {/* Saffron particle stream floating upward from map base */}
+      <Sparkles count={60} scale={[5, 8, 3]} size={0.8} speed={0.4} color="#FF9933" opacity={0.65} />
 
-      <MouseGroup>
-        <Float speed={1.4} rotationIntensity={0.9} floatIntensity={1.4}>
-          <Icosahedron args={[1.15, 0]} position={[-2.6, 0.8, 0]}>
-            <MeshDistortMaterial
-              color="#C9A84C"
-              metalness={0.9}
-              roughness={0.15}
-              distort={0.25}
-              speed={1.5}
-            />
-          </Icosahedron>
-        </Float>
+      <IndiaMap />
+      <CityDots />
 
-        <Float speed={1.1} rotationIntensity={1.1} floatIntensity={1.8}>
-          <Torus args={[0.75, 0.26, 32, 100]} position={[2.7, -0.6, -1]}>
-            <meshStandardMaterial color="#4A9EFF" metalness={0.85} roughness={0.25} />
-          </Torus>
-        </Float>
-
-        <Float speed={1.6} rotationIntensity={0.7} floatIntensity={1.2}>
-          <Octahedron args={[0.6, 0]} position={[1.6, 1.6, 1]}>
-            <meshStandardMaterial color="#00D4AA" metalness={0.8} roughness={0.2} />
-          </Octahedron>
-        </Float>
-
-        <Float speed={0.9} rotationIntensity={0.5} floatIntensity={1} >
-          <Dodecahedron args={[0.5, 0]} position={[-1.8, -1.6, 0.5]}>
-            <meshStandardMaterial color="#E8D5A3" metalness={0.9} roughness={0.1} />
-          </Dodecahedron>
-        </Float>
-
-        <Float speed={1.2} rotationIntensity={0.6} floatIntensity={1.4}>
-          <TorusKnot args={[0.42, 0.13, 120, 16]} position={[3.1, 1.4, -2]}>
-            <meshStandardMaterial color="#A68B3A" metalness={0.9} roughness={0.15} />
-          </TorusKnot>
-        </Float>
-      </MouseGroup>
+      {/* City ambient glow */}
+      <Sparkles count={24} scale={[4, 4, 1]} size={0.5} speed={0.3} color="#C9A84C" opacity={0.45} />
     </Canvas>
   );
 }

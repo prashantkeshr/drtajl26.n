@@ -12,7 +12,7 @@ export default function StatsSection() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Why DHURTA — Global"
+          eyebrow="Why DHURTA India"
           title="Proof, Not Promises"
           className="mb-16"
         />
@@ -28,6 +28,7 @@ export default function StatsSection() {
               className="flex flex-col items-center text-center"
             >
               <span className="font-display text-5xl font-black text-gradient-gold sm:text-6xl">
+                {stat.prefix && <span>{stat.prefix}</span>}
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </span>
               <span className="mt-3 text-sm font-medium uppercase tracking-wider text-gray-light">

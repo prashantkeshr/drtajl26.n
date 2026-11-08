@@ -16,6 +16,9 @@ import {
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import DPDPBanner from "@/components/layout/DPDPBanner";
+import EcosystemBanner from "@/components/layout/EcosystemBanner";
+import CursorGlow from "@/components/ui/CursorGlow";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -106,11 +109,11 @@ const siteDescription =
 
 export const metadata: Metadata = {
   title: {
-    default: "DHURTA — Privacy-First Technology Group | Browser, Connect & Setu",
-    template: "%s | DHURTA",
+    default: "Dhurta India — सुरक्षित तकनीक, भारतीय दृष्टि",
+    template: "%s | DHURTA India",
   },
   description: siteDescription,
-  metadataBase: new URL("https://dhurta.org"),
+  metadataBase: new URL("https://dhurta.in"),
   keywords: [
     "Dhurta",
     "Dhurta Browser",
@@ -124,11 +127,19 @@ export const metadata: Metadata = {
     "Dhurta Setu",
     "curated web index",
     "privacy-first software",
-    "Dhurta group",
-    "digital transformation",
+    "Dhurta India",
+    "digital transformation India",
     "Sanskrit clever",
+    "DPDP Act",
+    "भारतीय तकनीक",
   ],
-  alternates: { canonical: "https://dhurta.org" },
+  alternates: {
+    canonical: "https://dhurta.in",
+    languages: {
+      "en-IN": "https://dhurta.in",
+      hi: "https://dhurta.in/hi",
+    },
+  },
   verification: {
     other: { "msvalidate.01": "E50EBC1ACA98B59E247E744077DA0EF8" },
   },
@@ -143,20 +154,20 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "DHURTA — Privacy-First Technology Group",
+    title: "Dhurta India — सुरक्षित तकनीक, भारतीय दृष्टि",
     description: siteDescription,
-    url: "https://dhurta.org",
-    siteName: "DHURTA",
+    url: "https://dhurta.in",
+    siteName: "DHURTA India",
     type: "website",
-    locale: "en_US",
-    images: [{ url: "/dhurta-logo.png", width: 384, height: 384, alt: "Dhurta emblem" }],
+    locale: "en_IN",
+    images: [{ url: "/dhurta-in-og.svg", width: 1200, height: 630, alt: "Dhurta India" }],
   },
   twitter: {
-    card: "summary",
-    title: "DHURTA — Privacy-First Technology Group",
+    card: "summary_large_image",
+    title: "Dhurta India — सुरक्षित तकनीक, भारतीय दृष्टि",
     description:
-      "Makers of Dhurta Browser (zero telemetry), Dhurta Connect (E2E-encrypted P2P chat) and Dhurta Setu. Trust · Technology · Culture.",
-    images: ["/dhurta-logo.png"],
+      "Makers of Dhurta Browser (zero telemetry), Dhurta Connect (E2E-encrypted P2P chat) and Dhurta Setu. Privacy-first, made in India.",
+    images: ["/dhurta-in-og.svg"],
   },
 };
 
@@ -165,12 +176,12 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "DHURTA",
   alternateName: "The Dhurta Group",
-  url: "https://dhurta.org",
-  logo: "https://dhurta.org/dhurta-logo.png",
+  url: "https://dhurta.in",
+  logo: "https://dhurta.in/dhurta-logo.png",
   description: siteDescription,
-  email: "contact@dhurta.org",
+  email: "contact@dhurta.in",
   slogan: "The Clever Choice — Trust, Technology, Culture",
-  sameAs: ["https://dhurta.com", "https://github.com/prashantkeshr/drtajl26.n"],
+  sameAs: ["https://dhurta.org", "https://dhurta.com"],
   brand: [
     {
       "@type": "Brand",
@@ -208,9 +219,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <CursorGlow />
+        <EcosystemBanner />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <DPDPBanner />
       </body>
     </html>
   );
