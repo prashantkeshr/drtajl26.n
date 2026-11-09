@@ -2,6 +2,7 @@ import Hero from "@/components/home/Hero";
 import IndiaHeritage from "@/components/home/IndiaHeritage";
 import ServicesGrid from "@/components/home/ServicesGrid";
 import StatsSection from "@/components/home/StatsSection";
+import IndiaMap from "@/components/home/IndiaMap";
 import VenturesSection from "@/components/home/VenturesSection";
 import GlobalPresence from "@/components/home/GlobalPresence";
 import Testimonials from "@/components/home/Testimonials";
@@ -23,8 +24,10 @@ export default function Home() {
       <div className="bg-[rgba(255,153,51,0.05)]">
         <StatsSection />
       </div>
+      {/* India data sovereignty map */}
+      <IndiaMap />
       {/* black */}
-      <div className="bg-gradient-to-b from-[rgba(255,153,51,0.05)] to-black">
+      <div className="bg-gradient-to-b from-black to-black">
         <VenturesSection />
       </div>
       <GlobalPresence />

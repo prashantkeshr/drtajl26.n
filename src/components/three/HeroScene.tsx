@@ -1,111 +1,126 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Stars, Sparkles, Float } from "@react-three/drei";
+import { Stars, Line } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
-function CoreGem() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const wireRef = useRef<THREE.Mesh>(null);
+const NODES = 14;
+const HELIX_R = 1.9;
+const HELIX_H = 5.4;
+const ORB_R = 0.27;
+
+function HelixCore() {
+  const groupRef = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.25;
-      meshRef.current.rotation.x += delta * 0.08;
-    }
-    if (wireRef.current) {
-      wireRef.current.rotation.y += delta * 0.25;
-      wireRef.current.rotation.x += delta * 0.08;
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.22;
     }
   });
 
-  return (
-    <>
-      <mesh ref={meshRef}>
-        <icosahedronGeometry args={[1.8, 0]} />
-        <meshStandardMaterial
-          color="#C9A84C"
-          metalness={0.85}
-          roughness={0.08}
-          transparent
-          opacity={0.9}
-        />
-      </mesh>
-      <mesh ref={wireRef} scale={[1.03, 1.03, 1.03]}>
-        <icosahedronGeometry args={[1.8, 0]} />
-        <meshBasicMaterial color="#FF9933" wireframe transparent opacity={0.22} />
-      </mesh>
-    </>
-  );
-}
+  const { nodes, s0, s1 } = useMemo(() => {
+    const nodes: { x: number; y: number; z: number; strand: number }[] = [];
 
-const ORBITERS: { angle: number; radius: number; speed: number; size: number; color: string; yOff: number }[] = [
-  { angle: 0,              radius: 3.5, speed: 0.4,   size: 0.32, color: "#FF9933", yOff: 0.3  },
-  { angle: Math.PI * 0.4,  radius: 3.8, speed: -0.3,  size: 0.22, color: "#C9A84C", yOff: -0.4 },
-  { angle: Math.PI * 0.75, radius: 3.2, speed: 0.5,   size: 0.28, color: "#00D4AA", yOff: 0.2  },
-  { angle: Math.PI * 1.1,  radius: 3.6, speed: -0.42, size: 0.20, color: "#FF9933", yOff: 0.5  },
-  { angle: Math.PI * 1.5,  radius: 3.9, speed: 0.35,  size: 0.26, color: "#C9A84C", yOff: -0.2 },
-  { angle: Math.PI * 1.8,  radius: 3.3, speed: -0.48, size: 0.18, color: "#00D4AA", yOff: 0.1  },
-];
+    for (let s = 0; s < 2; s++) {
+      for (let i = 0; i < NODES; i++) {
+        const t = i / (NODES - 1);
+        const theta = t * Math.PI * 4 + s * Math.PI;
+        const y = (t - 0.5) * HELIX_H;
+        nodes.push({
+          x: HELIX_R * Math.cos(theta),
+          y,
+          z: HELIX_R * Math.sin(theta),
+          strand: s,
+        });
+      }
+    }
 
-function Orbiters() {
-  const refs = useRef<(THREE.Mesh | null)[]>([]);
+    const s0: [number, number, number][] = nodes
+      .filter((n) => n.strand === 0)
+      .map((n) => [n.x, n.y, n.z]);
+    const s1: [number, number, number][] = nodes
+      .filter((n) => n.strand === 1)
+      .map((n) => [n.x, n.y, n.z]);
 
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    ORBITERS.forEach(({ angle, radius, speed, yOff }, i) => {
-      const m = refs.current[i];
-      if (!m) return;
-      const a = angle + t * speed;
-      m.position.set(
-        Math.cos(a) * radius,
-        yOff + Math.sin(t * 0.4 + i) * 0.3,
-        Math.sin(a) * radius
-      );
-      m.rotation.y += 0.03;
-      m.rotation.x += 0.01;
-    });
-  });
+    return { nodes, s0, s1 };
+  }, []);
 
   return (
-    <>
-      {ORBITERS.map(({ size, color }, i) => (
-        <mesh key={i} ref={(el) => { refs.current[i] = el; }}>
-          <octahedronGeometry args={[size, 0]} />
+    <group ref={groupRef} rotation={[0.2, 0, 0]}>
+      {/* Strand backbones */}
+      <Line points={s0} color="#FF5500" lineWidth={1.2} transparent opacity={0.55} />
+      <Line points={s1} color="#00FFD0" lineWidth={1.2} transparent opacity={0.55} />
+
+      {/* Crosslinks */}
+      {Array.from({ length: NODES }, (_, i) => {
+        const a = nodes[i];
+        const b = nodes[NODES + i];
+        return (
+          <Line
+            key={i}
+            points={[
+              [a.x, a.y, a.z],
+              [b.x, b.y, b.z],
+            ]}
+            color="#6688bb"
+            lineWidth={0.5}
+            transparent
+            opacity={0.22}
+          />
+        );
+      })}
+
+      {/* Glowing orbs */}
+      {nodes.map((n, i) => (
+        <mesh key={i} position={[n.x, n.y, n.z]}>
+          <sphereGeometry args={[ORB_R, 22, 22]} />
           <meshStandardMaterial
-            color={color}
-            metalness={0.6}
-            roughness={0.2}
-            emissive={color}
-            emissiveIntensity={0.4}
+            color={n.strand === 0 ? "#FF5500" : "#00FFD0"}
+            emissive={n.strand === 0 ? "#FF5500" : "#00FFD0"}
+            emissiveIntensity={4.5}
+            metalness={0.0}
+            roughness={0.3}
+            toneMapped={false}
           />
         </mesh>
       ))}
-    </>
+    </group>
   );
 }
 
 export default function HeroScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 9], fov: 45 }}
+      camera={{ position: [0, 0, 11], fov: 48 }}
       dpr={[1, 1.8]}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.6} />
-      <pointLight position={[5, 5, 5]}   intensity={2.2} color="#FF9933" />
-      <pointLight position={[-4, -4, 4]} intensity={1.0} color="#C9A84C" />
-      <pointLight position={[0, 2, 7]}   intensity={0.6} color="#ffffff" />
+      <ambientLight intensity={0.08} />
+      <pointLight position={[5, 6, 4]} intensity={5} color="#FF5500" />
+      <pointLight position={[-5, -6, 4]} intensity={5} color="#00FFD0" />
 
-      <Stars radius={60} depth={30} count={1600} factor={2.2} saturation={0} fade speed={0.6} />
-      <Sparkles count={70} scale={[8, 8, 4]} size={0.9} speed={0.35} color="#FF9933" opacity={0.5} />
-      <Sparkles count={30} scale={[6, 6, 2]} size={0.6} speed={0.25} color="#C9A84C" opacity={0.4} />
+      <Stars
+        radius={90}
+        depth={45}
+        count={2500}
+        factor={2.5}
+        saturation={0}
+        fade
+        speed={0.4}
+      />
 
-      <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.5}>
-        <CoreGem />
-      </Float>
-      <Orbiters />
+      <HelixCore />
+
+      <EffectComposer>
+        <Bloom
+          intensity={2.2}
+          luminanceThreshold={0.15}
+          luminanceSmoothing={0.85}
+          mipmapBlur
+        />
+      </EffectComposer>
     </Canvas>
   );
 }
