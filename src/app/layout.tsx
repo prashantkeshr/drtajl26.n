@@ -16,8 +16,6 @@ import {
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import DPDPBanner from "@/components/layout/DPDPBanner";
-import EcosystemBanner from "@/components/layout/EcosystemBanner";
 import CursorGlow from "@/components/ui/CursorGlow";
 
 const playfair = Playfair_Display({
@@ -220,11 +218,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <CursorGlow />
-        <EcosystemBanner />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
-        <DPDPBanner />
       </body>
     </html>
   );

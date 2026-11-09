@@ -1,11 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, ShieldCheck, Zap, Code2, MapPin } from "lucide-react";
 import Button from "@/components/ui/Button";
-import LanguageTypewriter from "@/components/ui/LanguageTypewriter";
 
 const HeroScene = dynamic(() => import("@/components/three/HeroScene"), { ssr: false });
 
@@ -19,19 +17,7 @@ export default function Hero() {
         <HeroScene />
       </div>
 
-      {/* Mobile SVG India silhouette fallback */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-20 md:hidden">
-        <Image
-          src="/india-mobile-bg.svg"
-          alt=""
-          fill
-          className="object-contain"
-          aria-hidden
-          priority
-        />
-      </div>
-
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-navy/40 via-transparent to-navy" />
+<div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-navy/40 via-transparent to-navy" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-noise" />
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pt-24 text-center">
@@ -68,25 +54,16 @@ export default function Hero() {
             ))}
           </span>
 
-          {/* Line 2 — Devanagari subtitle */}
+          {/* Line 2 — Punchy tagline */}
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="font-devanagari text-3xl font-bold leading-[1.6] text-saffron/90 sm:text-4xl"
+            className="text-2xl font-bold tracking-wide text-saffron/90 sm:text-3xl"
           >
-            भारत की तकनीक
+            Smart. Secure. Sovereign.
           </motion.span>
         </h1>
-
-        {/* Language typewriter */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
-        >
-          <LanguageTypewriter className="mt-4" />
-        </motion.div>
 
         {/* Tagline */}
         <motion.p
@@ -95,28 +72,44 @@ export default function Hero() {
           transition={{ delay: 1.2, duration: 0.6 }}
           className="mt-4 max-w-2xl text-balance text-lg text-gray-light sm:text-xl"
         >
-          Security-by-design. Built for Bharat.
+          Security-by-design. Built for India.
         </motion.p>
+
+        {/* Compliance stickers */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.6 }}
+          className="mt-6 flex flex-wrap justify-center gap-2"
+        >
+          {[
+            { icon: <ShieldCheck size={11} />, text: "DPDP 2023 Compliant" },
+            { icon: <MapPin size={11} />, text: "Data in India" },
+            { icon: <Zap size={11} />, text: "Zero Telemetry" },
+            { icon: <Code2 size={11} />, text: "Open Source" },
+          ].map(({ icon, text }) => (
+            <span key={text} className="inline-flex items-center gap-1.5 rounded-full border border-saffron/30 bg-saffron/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-saffron/80">
+              {icon} {text}
+            </span>
+          ))}
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-saffron/30 bg-saffron/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-saffron/80">
+            🇮🇳 Made in India
+          </span>
+        </motion.div>
 
         {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.6 }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+          transition={{ delay: 1.5, duration: 0.6 }}
+          className="mt-8 flex flex-col items-center gap-4 sm:flex-row"
         >
-          <div className="flex flex-col items-center gap-1.5">
-            <Button href="/contact" variant="saffron" icon={<ArrowRight size={16} />}>
-              अभी शुरू करें
-            </Button>
-            <span className="text-[11px] text-gray-light/50">Start Your Transformation</span>
-          </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <Button href="/portfolio" variant="saffron-outline">
-              हमारा काम देखें
-            </Button>
-            <span className="text-[11px] text-gray-light/50">Explore Our Work</span>
-          </div>
+          <Button href="/contact" variant="saffron" icon={<ArrowRight size={16} />}>
+            Start Now
+          </Button>
+          <Button href="/portfolio" variant="saffron-outline">
+            See Our Work
+          </Button>
         </motion.div>
       </div>
 
