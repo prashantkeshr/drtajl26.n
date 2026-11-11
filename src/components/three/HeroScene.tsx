@@ -154,43 +154,46 @@ function Scene() {
       <pointLight position={[-4, -3, 3]} intensity={4} color="#C9A84C" />
       <pointLight position={[0, -5, -2]} intensity={2} color="#00D4AA" />
 
-      <CoreOrb />
+      {/* Shift entire orb assembly to right half of viewport */}
+      <group position={[2.2, 0, 0]}>
+        <CoreOrb />
 
-      {/* Saffron ring — prominent tilt */}
-      <OrbitalRing
-        tiltX={Math.PI / 6}
-        tiltZ={0}
-        color="#FF9933"
-        radius={2.1}
-        speed={0.26}
-        particles={8}
-        tubeR={0.007}
-        opacity={0.3}
-      />
-      {/* Gold ring — counter-rotate, offset lean */}
-      <OrbitalRing
-        tiltX={-Math.PI / 3.5}
-        tiltZ={Math.PI / 5}
-        color="#C9A84C"
-        radius={2.56}
-        speed={-0.17}
-        particles={6}
-        tubeR={0.005}
-        opacity={0.22}
-      />
-      {/* Light gold ring — near-equatorial */}
-      <OrbitalRing
-        tiltX={Math.PI / 2.2}
-        tiltZ={Math.PI / 4}
-        color="#E8D5A3"
-        radius={2.98}
-        speed={0.12}
-        particles={5}
-        tubeR={0.004}
-        opacity={0.14}
-      />
+        {/* Saffron ring — prominent tilt */}
+        <OrbitalRing
+          tiltX={Math.PI / 6}
+          tiltZ={0}
+          color="#FF9933"
+          radius={2.1}
+          speed={0.26}
+          particles={8}
+          tubeR={0.007}
+          opacity={0.3}
+        />
+        {/* Gold ring — counter-rotate, offset lean */}
+        <OrbitalRing
+          tiltX={-Math.PI / 3.5}
+          tiltZ={Math.PI / 5}
+          color="#C9A84C"
+          radius={2.56}
+          speed={-0.17}
+          particles={6}
+          tubeR={0.005}
+          opacity={0.22}
+        />
+        {/* Light gold ring — near-equatorial */}
+        <OrbitalRing
+          tiltX={Math.PI / 2.2}
+          tiltZ={Math.PI / 4}
+          color="#E8D5A3"
+          radius={2.98}
+          speed={0.12}
+          particles={5}
+          tubeR={0.004}
+          opacity={0.14}
+        />
 
-      <GoldDust />
+        <GoldDust />
+      </group>
 
       <EffectComposer>
         <Bloom
