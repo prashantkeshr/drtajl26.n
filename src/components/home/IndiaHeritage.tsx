@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 
 const pillars = [
   {
-    hindi: "गणित",
+    hindi: "गणितम्",
     english: "Mathematics",
     description:
       "India gave the world zero, the decimal system, and Aryabhata's astronomical calculations — the bedrock of all modern computation.",
   },
   {
-    hindi: "नवाचार",
+    hindi: "नवाचारः",
     english: "Innovation",
     description:
       "From IIT excellence to ISRO's frugal space missions and UPI's billion daily transactions — India innovates at scale.",
   },
   {
-    hindi: "समुदाय",
+    hindi: "समुदायः",
     english: "Community",
     description:
       "Open-source tradition, collaborative engineering, and a global developer diaspora building technology for everyone.",

@@ -8,7 +8,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { navLinks } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -74,7 +73,6 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <LanguageSwitcher />
           <Link
             href="/contact"
             className="group inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-[length:200%_auto] px-5 py-2 text-sm font-semibold text-black transition-all duration-300 hover:bg-[position:100%_0] hover:shadow-[0_0_24px_2px_rgba(201,168,76,0.4)]"
@@ -121,8 +119,7 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-4">
-                <LanguageSwitcher />
+              <div className="mt-3 border-t border-white/10 pt-4">
                 <Link
                   href="/contact"
                   className="rounded-full bg-gradient-to-r from-gold-light via-gold to-gold-dark px-5 py-2 text-sm font-semibold text-black"

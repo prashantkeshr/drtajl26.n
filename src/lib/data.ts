@@ -5,25 +5,10 @@ export type BrandLanguage = {
   fontClass: string;
 };
 
-// Rotating hero subtitle — India-first order, then global.
+// Rotating hero subtitle — English primary, Sanskrit as cultural anchor.
 export const brandLanguages: BrandLanguage[] = [
-  { code: "hi", language: "Hindi", text: "धूर्त – चतुर विकल्प", fontClass: "font-devanagari" },
-  { code: "ta", language: "Tamil", text: "தூர்த்தா – திறமையான தேர்வு", fontClass: "font-tamil" },
-  { code: "bn", language: "Bengali", text: "ধূর্ত – চতুর পছন্দ", fontClass: "font-bengali" },
-  { code: "te", language: "Telugu", text: "ధూర్త – తెలివైన ఎంపిక", fontClass: "font-sans" },
-  { code: "kn", language: "Kannada", text: "ಧೂರ್ತ – ಬುದ್ಧಿವಂತ ಆಯ್ಕೆ", fontClass: "font-sans" },
-  { code: "mr", language: "Marathi", text: "धूर्त – चतुर पर्याय", fontClass: "font-devanagari" },
   { code: "en", language: "English", text: "The Clever Choice", fontClass: "font-sans" },
   { code: "sa", language: "Sanskrit", text: "धूर्तः – चतुरः समाधानकर्ता", fontClass: "font-devanagari" },
-  { code: "ar", language: "Arabic", text: "دهورتا – الاختيار الذكي", fontClass: "font-arabic" },
-  { code: "zh", language: "Chinese", text: "达尔塔 – 聪明的选择", fontClass: "font-sc" },
-  { code: "ja", language: "Japanese", text: "ダルタ – 賢い選択", fontClass: "font-jp" },
-  { code: "ko", language: "Korean", text: "다르타 – 똑똑한 선택", fontClass: "font-kr" },
-  { code: "th", language: "Thai", text: "ฑูรตะ – ทางเลือกที่ชาญฉลาด", fontClass: "font-thai" },
-  { code: "fr", language: "French", text: "Dhurta – Le choix intelligent", fontClass: "font-sans" },
-  { code: "es", language: "Spanish", text: "Dhurta – La elección inteligente", fontClass: "font-sans" },
-  { code: "de", language: "German", text: "Dhurta – Die kluge Wahl", fontClass: "font-sans" },
-  { code: "sw", language: "Swahili", text: "Dhurta – Chaguo mahiri", fontClass: "font-sans" },
 ];
 
 export const uiLanguages = [
@@ -231,7 +216,7 @@ export const services: Service[] = [
     shortDesc: "Design that adapts to every culture, instantly.",
     description:
       "Interfaces and identities crafted with cultural fluency — design systems that feel native in Tokyo, Lagos, São Paulo, and everywhere in between.",
-    icon: "sparkles",
+    icon: "pen-tool",
     color: "blue",
   },
   {

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Code2,
   Brain,
-  Sparkles,
+  PenTool,
   Cloud,
   Cpu,
   TrendingUp,
@@ -19,7 +19,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 const icons: Record<string, LucideIcon> = {
   code: Code2,
   brain: Brain,
-  sparkles: Sparkles,
+  "pen-tool": PenTool,
   cloud: Cloud,
   cpu: Cpu,
   "trending-up": TrendingUp,

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { navLinks, uiLanguages } from "@/lib/data";
+import { navLinks } from "@/lib/data";
 import { LinkedInIcon, XIcon, InstagramIcon, GitHubIcon } from "@/components/ui/SocialIcons";
 
 const ecosystemLinks = [
@@ -14,27 +14,10 @@ const ecosystemLinks = [
   { label: "Group Ventures", href: "/ventures" },
 ];
 
-const scriptSnippets = [
-  { text: "धूर्त", font: "font-devanagari" },
-  { text: "ধূর্ত", font: "font-bengali" },
-  { text: "دهورتا", font: "font-arabic" },
-  { text: "达尔塔", font: "font-sc" },
-  { text: "ダルタ", font: "font-jp" },
-  { text: "다르타", font: "font-kr" },
-];
-
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-black">
       <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-[120%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08),transparent_70%)]" />
-
-      <div className="relative mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 overflow-hidden border-b border-white/5 px-6 py-3 text-2xl font-semibold text-white/5 lg:px-8">
-        {[...scriptSnippets, ...scriptSnippets].map((s, i) => (
-          <span key={i} className={s.font}>
-            {s.text}
-          </span>
-        ))}
-      </div>
 
       <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
@@ -143,19 +126,30 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-gold">
-              Global Languages
+              Legal &amp; Policies
             </h4>
-            <div className="flex flex-wrap gap-2">
-              {uiLanguages.map((lang) => (
-                <motion.span
-                  key={lang.code}
-                  whileHover={{ y: -2, color: "#C9A84C" }}
-                  className="cursor-pointer rounded-full border border-white/10 px-2.5 py-1 text-xs text-gray-light transition-colors"
-                >
-                  {lang.label}
-                </motion.span>
+            <ul className="space-y-2.5">
+              {[
+                { label: "Privacy Policy", href: "/privacy" },
+                { label: "Terms of Service", href: "/terms" },
+                { label: "DPDP Compliance", href: "/dpdp" },
+                { label: "Responsible Disclosure", href: "/security" },
+                { label: "Open Source Licences", href: "/oss" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="group inline-flex items-center gap-1 text-sm text-gray-light transition-colors hover:text-white"
+                  >
+                    {link.label}
+                    <ArrowUpRight
+                      size={13}
+                      className="opacity-0 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+                    />
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
             <p className="mt-6 text-xs text-gray-light">
               contact@dhurta.in
               <br />

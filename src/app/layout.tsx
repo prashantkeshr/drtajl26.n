@@ -5,13 +5,6 @@ import {
   Space_Grotesk,
   Noto_Sans,
   Noto_Sans_Devanagari,
-  Noto_Sans_Bengali,
-  Noto_Sans_Arabic,
-  Noto_Sans_SC,
-  Noto_Sans_JP,
-  Noto_Sans_KR,
-  Noto_Sans_Thai,
-  Noto_Sans_Tamil,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -53,61 +46,12 @@ const notoDevanagari = Noto_Sans_Devanagari({
   display: "swap",
 });
 
-const notoBengali = Noto_Sans_Bengali({
-  variable: "--font-noto-bengali",
-  subsets: ["bengali"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const notoArabic = Noto_Sans_Arabic({
-  variable: "--font-noto-arabic",
-  subsets: ["arabic"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const notoSC = Noto_Sans_SC({
-  variable: "--font-noto-sc",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const notoJP = Noto_Sans_JP({
-  variable: "--font-noto-jp",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const notoKR = Noto_Sans_KR({
-  variable: "--font-noto-kr",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const notoThai = Noto_Sans_Thai({
-  variable: "--font-noto-thai",
-  subsets: ["thai"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
-const notoTamil = Noto_Sans_Tamil({
-  variable: "--font-noto-tamil",
-  subsets: ["tamil"],
-  weight: ["400", "700"],
-  display: "swap",
-});
-
 const siteDescription =
   "DHURTA is a privacy-first technology group from India — makers of Dhurta Browser (the zero-telemetry open-source web browser), Dhurta Connect (serverless end-to-end encrypted P2P chat, calls & file sharing), and Dhurta Setu (a curated web index). Built on Trust, Technology & Culture — Dhurta is Sanskrit for clever.";
 
 export const metadata: Metadata = {
   title: {
-    default: "Dhurta India — सुरक्षित तकनीक, भारतीय दृष्टि",
+    default: "Dhurta India — Smart. Secure. Sovereign.",
     template: "%s | DHURTA India",
   },
   description: siteDescription,
@@ -126,16 +70,16 @@ export const metadata: Metadata = {
     "curated web index",
     "privacy-first software",
     "Dhurta India",
-    "digital transformation India",
+    "digital sovereignty India",
     "Sanskrit clever",
     "DPDP Act",
-    "भारतीय तकनीक",
+    "data privacy India",
+    "Indian tech",
   ],
   alternates: {
     canonical: "https://dhurta.in",
     languages: {
       "en-IN": "https://dhurta.in",
-      hi: "https://dhurta.in/hi",
     },
   },
   verification: {
@@ -152,7 +96,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Dhurta India — सुरक्षित तकनीक, भारतीय दृष्टि",
+    title: "Dhurta India — Smart. Secure. Sovereign.",
     description: siteDescription,
     url: "https://dhurta.in",
     siteName: "DHURTA India",
@@ -162,7 +106,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dhurta India — सुरक्षित तकनीक, भारतीय दृष्टि",
+    title: "Dhurta India — Smart. Secure. Sovereign.",
     description:
       "Makers of Dhurta Browser (zero telemetry), Dhurta Connect (E2E-encrypted P2P chat) and Dhurta Setu. Privacy-first, made in India.",
     images: ["/dhurta-in-og.svg"],
@@ -210,7 +154,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} ${spaceGrotesk.variable} ${notoSans.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${notoArabic.variable} ${notoSC.variable} ${notoJP.variable} ${notoKR.variable} ${notoThai.variable} ${notoTamil.variable} h-full scroll-smooth`}
+      className={`${playfair.variable} ${inter.variable} ${spaceGrotesk.variable} ${notoSans.variable} ${notoDevanagari.variable} h-full scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-navy text-white antialiased overflow-x-hidden">
         <script
