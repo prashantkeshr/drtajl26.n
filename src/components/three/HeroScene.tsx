@@ -2,125 +2,216 @@
 
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Stars, Line } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
-const NODES = 14;
-const HELIX_R = 1.9;
-const HELIX_H = 5.4;
-const ORB_R = 0.27;
+/* ─── Orbital ring with particles orbiting along it ─────────────── */
+interface RingProps {
+  tiltX: number;
+  tiltZ: number;
+  color: string;
+  radius: number;
+  speed: number;
+  particles: number;
+  tubeR: number;
+  opacity: number;
+}
 
-function HelixCore() {
-  const groupRef = useRef<THREE.Group>(null);
+function OrbitalRing({ tiltX, tiltZ, color, radius, speed, particles, tubeR, opacity }: RingProps) {
+  const spinRef = useRef<THREE.Group>(null);
 
-  useFrame((_, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.22;
+  const positions = useMemo(
+    () =>
+      Array.from({ length: particles }, (_, i) => {
+        const a = (i / particles) * Math.PI * 2;
+        return [Math.cos(a) * radius, 0, Math.sin(a) * radius] as [number, number, number];
+      }),
+    [particles, radius]
+  );
+
+  useFrame((_, dt) => {
+    if (spinRef.current) spinRef.current.rotation.y += dt * speed;
+  });
+
+  return (
+    <group rotation={[tiltX, 0, tiltZ]}>
+      <group ref={spinRef}>
+        {/* Ring backbone */}
+        <mesh>
+          <torusGeometry args={[radius, tubeR, 6, 160]} />
+          <meshBasicMaterial color={color} transparent opacity={opacity} />
+        </mesh>
+        {/* Glowing particles */}
+        {positions.map((pos, i) => (
+          <mesh key={i} position={pos}>
+            <sphereGeometry args={[0.027, 10, 10]} />
+            <meshStandardMaterial
+              color={color}
+              emissive={color}
+              emissiveIntensity={5.5}
+              toneMapped={false}
+            />
+          </mesh>
+        ))}
+      </group>
+    </group>
+  );
+}
+
+/* ─── Central pulsing gold orb ───────────────────────────────────── */
+function CoreOrb() {
+  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+
+  useFrame(({ clock }) => {
+    if (matRef.current) {
+      matRef.current.emissiveIntensity =
+        1.1 + Math.sin(clock.getElapsedTime() * 0.65) * 0.22;
     }
   });
 
-  const { nodes, s0, s1 } = useMemo(() => {
-    const nodes: { x: number; y: number; z: number; strand: number }[] = [];
+  return (
+    <>
+      {/* Core metallic sphere */}
+      <mesh>
+        <sphereGeometry args={[0.9, 72, 72]} />
+        <meshStandardMaterial
+          ref={matRef}
+          color="#C9A84C"
+          emissive="#D06818"
+          emissiveIntensity={1.3}
+          metalness={0.72}
+          roughness={0.14}
+          toneMapped={false}
+        />
+      </mesh>
+      {/* Inner atmosphere */}
+      <mesh>
+        <sphereGeometry args={[1.28, 32, 32]} />
+        <meshBasicMaterial
+          color="#FF9933"
+          transparent
+          opacity={0.038}
+          side={THREE.BackSide}
+        />
+      </mesh>
+      {/* Outer diffuse glow shell */}
+      <mesh>
+        <sphereGeometry args={[1.72, 32, 32]} />
+        <meshBasicMaterial
+          color="#C9A84C"
+          transparent
+          opacity={0.014}
+          side={THREE.BackSide}
+        />
+      </mesh>
+    </>
+  );
+}
 
-    for (let s = 0; s < 2; s++) {
-      for (let i = 0; i < NODES; i++) {
-        const t = i / (NODES - 1);
-        const theta = t * Math.PI * 4 + s * Math.PI;
-        const y = (t - 0.5) * HELIX_H;
-        nodes.push({
-          x: HELIX_R * Math.cos(theta),
-          y,
-          z: HELIX_R * Math.sin(theta),
-          strand: s,
-        });
-      }
+/* ─── Ambient gold dust field ────────────────────────────────────── */
+function GoldDust() {
+  const ref = useRef<THREE.Points>(null);
+
+  const geometry = useMemo(() => {
+    const count = 320;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const r = 5.5 + Math.random() * 6.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      pos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pos[i * 3 + 2] = r * Math.cos(phi);
     }
-
-    const s0: [number, number, number][] = nodes
-      .filter((n) => n.strand === 0)
-      .map((n) => [n.x, n.y, n.z]);
-    const s1: [number, number, number][] = nodes
-      .filter((n) => n.strand === 1)
-      .map((n) => [n.x, n.y, n.z]);
-
-    return { nodes, s0, s1 };
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    return geo;
   }, []);
 
+  useFrame((_, dt) => {
+    if (ref.current) ref.current.rotation.y += dt * 0.05;
+  });
+
   return (
-    <group ref={groupRef} rotation={[0.2, 0, 0]}>
-      {/* Strand backbones */}
-      <Line points={s0} color="#FF5500" lineWidth={1.2} transparent opacity={0.55} />
-      <Line points={s1} color="#00FFD0" lineWidth={1.2} transparent opacity={0.55} />
+    <points ref={ref} geometry={geometry}>
+      <pointsMaterial
+        color="#C9A84C"
+        size={0.022}
+        transparent
+        opacity={0.38}
+        sizeAttenuation
+      />
+    </points>
+  );
+}
 
-      {/* Crosslinks */}
-      {Array.from({ length: NODES }, (_, i) => {
-        const a = nodes[i];
-        const b = nodes[NODES + i];
-        return (
-          <Line
-            key={i}
-            points={[
-              [a.x, a.y, a.z],
-              [b.x, b.y, b.z],
-            ]}
-            color="#6688bb"
-            lineWidth={0.5}
-            transparent
-            opacity={0.22}
-          />
-        );
-      })}
+/* ─── Full scene composition ─────────────────────────────────────── */
+function Scene() {
+  return (
+    <>
+      <ambientLight intensity={0.06} />
+      <pointLight position={[4, 5, 4]}   intensity={9} color="#FF9933" />
+      <pointLight position={[-4, -3, 3]} intensity={4} color="#C9A84C" />
+      <pointLight position={[0, -5, -2]} intensity={2} color="#00D4AA" />
 
-      {/* Glowing orbs */}
-      {nodes.map((n, i) => (
-        <mesh key={i} position={[n.x, n.y, n.z]}>
-          <sphereGeometry args={[ORB_R, 22, 22]} />
-          <meshStandardMaterial
-            color={n.strand === 0 ? "#FF5500" : "#00FFD0"}
-            emissive={n.strand === 0 ? "#FF5500" : "#00FFD0"}
-            emissiveIntensity={4.5}
-            metalness={0.0}
-            roughness={0.3}
-            toneMapped={false}
-          />
-        </mesh>
-      ))}
-    </group>
+      <CoreOrb />
+
+      {/* Saffron ring — prominent tilt */}
+      <OrbitalRing
+        tiltX={Math.PI / 6}
+        tiltZ={0}
+        color="#FF9933"
+        radius={2.1}
+        speed={0.26}
+        particles={8}
+        tubeR={0.007}
+        opacity={0.3}
+      />
+      {/* Gold ring — counter-rotate, offset lean */}
+      <OrbitalRing
+        tiltX={-Math.PI / 3.5}
+        tiltZ={Math.PI / 5}
+        color="#C9A84C"
+        radius={2.56}
+        speed={-0.17}
+        particles={6}
+        tubeR={0.005}
+        opacity={0.22}
+      />
+      {/* Light gold ring — near-equatorial */}
+      <OrbitalRing
+        tiltX={Math.PI / 2.2}
+        tiltZ={Math.PI / 4}
+        color="#E8D5A3"
+        radius={2.98}
+        speed={0.12}
+        particles={5}
+        tubeR={0.004}
+        opacity={0.14}
+      />
+
+      <GoldDust />
+
+      <EffectComposer>
+        <Bloom
+          intensity={1.0}
+          luminanceThreshold={0.3}
+          luminanceSmoothing={0.8}
+          mipmapBlur
+        />
+      </EffectComposer>
+    </>
   );
 }
 
 export default function HeroScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 11], fov: 48 }}
+      camera={{ position: [0, 0, 9.5], fov: 46 }}
       dpr={[1, 1.8]}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.08} />
-      <pointLight position={[5, 6, 4]} intensity={5} color="#FF5500" />
-      <pointLight position={[-5, -6, 4]} intensity={5} color="#00FFD0" />
-
-      <Stars
-        radius={90}
-        depth={45}
-        count={2500}
-        factor={2.5}
-        saturation={0}
-        fade
-        speed={0.4}
-      />
-
-      <HelixCore />
-
-      <EffectComposer>
-        <Bloom
-          intensity={2.2}
-          luminanceThreshold={0.15}
-          luminanceSmoothing={0.85}
-          mipmapBlur
-        />
-      </EffectComposer>
+      <Scene />
     </Canvas>
   );
 }

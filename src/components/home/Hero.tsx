@@ -17,7 +17,9 @@ export default function Hero() {
         <HeroScene />
       </div>
 
-<div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-navy/40 via-transparent to-navy" />
+      {/* Warm ambient glow behind orb */}
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_55%_60%_at_60%_42%,rgba(201,168,76,0.07),transparent)]" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-navy/50 via-transparent to-navy" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-noise" />
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pt-24 text-center">
@@ -70,9 +72,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.6 }}
-          className="mt-4 max-w-2xl text-balance text-lg text-gray-light sm:text-xl"
+          className="mt-5 max-w-xl text-balance text-lg leading-relaxed text-gray-light sm:text-xl"
         >
-          Security-by-design. Built for India.
+          Zero telemetry. Zero servers. Zero compromise.
+          <span className="block mt-1 text-base text-gray-light/70">
+            Browser · Encrypted Chat · Curated Web — all built for India&apos;s data sovereignty laws.
+          </span>
         </motion.p>
 
         {/* Compliance stickers */}

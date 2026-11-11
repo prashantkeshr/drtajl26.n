@@ -138,12 +138,28 @@ body {
 .glass-card {
   background: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.065),
-    rgba(255, 255, 255, 0.018)
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.012)
   );
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 153, 51, 0.12);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(201, 168, 76, 0.14);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 0 0 0.5px rgba(255, 153, 51, 0.06) inset;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(201, 168, 76, 0.26);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.09) inset,
+    0 0 24px rgba(201, 168, 76, 0.06);
+}
+
+.glow-gold {
+  box-shadow: 0 0 24px rgba(201, 168, 76, 0.35), 0 0 48px rgba(201, 168, 76, 0.15);
 }
 
 .perspective-container {
